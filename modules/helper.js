@@ -1,6 +1,6 @@
 const  axios  = require('axios');
 const mongoose = require('mongoose');
-module.exports = {handleGetData,handleAddingData,handleGetCollection};
+module.exports = {handleGetData,handleAddingData,handleGetCollection,handleDeletingData};
 
 const threeDSchema = new mongoose.Schema({
     title: String,
@@ -17,9 +17,7 @@ let arr = [];
   async function handleGetData(req,res){
       
            
-
-
-  let nameOfModel= req.query.title
+let nameOfModel= req.query.title
   let url = `https://api.sketchfab.com/v3/search?type=models&q=${nameOfModel}%20&animated=false`
 console.log('the name of the model is',nameOfModel);
 
@@ -27,16 +25,17 @@ console.log('the name of the model is',nameOfModel);
   try{
         let data = await axios.get(url)
         // console.log('the data console',data);
-   data.data.results.map(item=>{
+   data.data.results.map((item,index)=>{
     // console.log(item);
 
-       let modelData=new modelClass (item.name, item.embedUrl,'cars', item.thumbnails.images[0].url,'tasneem.alabsi@gmail.com');
+       let modelData=new modelClass (item.name, item.embedUrl,'cars', item.thumbnails.images[0].url,'tasneem.alabsi@gmail.com',index);
        arr.push(modelData);   }
        
 )
 
 
-res.send(arr)
+res.send(arr);
+arr=[];
     }
 
     
@@ -109,19 +108,46 @@ function handleGetCollection (req, res) {
     }
 
 
+    function handleDeletingData (req,res){
+
+     let email= req.query.email;
+     let modelID = req.params.modelID2;
+     let collectionType = req.query.collection;
+
+    const threeDModel = mongoose.model(collectionType, threeDSchema);
+    console.log(req.params);
+    console.log(modelID);
     
+    
+    threeDModel.remove({_id:modelID},(error,modelData1)=>{
+        if(error) {
+            console.log('error in deleteing the data',error)
+            // console.log();
+        } else {
+            console.log('data deleted', modelData1)
+            modelsModel.find({email}, function (error, modelData) {
+                if (error) {
+                    console.log('error in getting the data')
+                } else {
+                    res.send(modelData)
+                }
+            })
+        }
+    })
+        }
 
 
 
 
 
 class modelClass {
-    constructor(modelName, modelUrl, modelCollection, thumbnail, email){
+    constructor(modelName, modelUrl, modelCollection, thumbnail, email, key){
            this.modelName = modelName;
            this.modelUrl=modelUrl;
            this.thumbnail=thumbnail;
            this.modelCollection=modelCollection;
            this.email=email;
+           this.key=key
             
        }
     }
