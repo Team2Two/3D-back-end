@@ -8,8 +8,12 @@ const server = express();
 server.use(cors());
 const {handleGetData,handleAddingData,handleGetCollection} = require('./modules/helper.js');
 
+// mongoose.connect(`${process.env.DATADB_LINK}`, { useNewUrlParser: true, useUnifiedTopology: true });
+// mongoose.connect(`${process.env.MONGO_LINK}`, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://maiadadb:0000@cluster0-shard-00-00.ii9w9.mongodb.net:27017,cluster0-shard-00-01.ii9w9.mongodb.net:27017,cluster0-shard-00-02.ii9w9.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-114hrc-shard-0&authSource=admin&retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
+// mongoose.connect(`${process.env.LOCAL}/3dmodel`, { useNewUrlParser: true, useUnifiedTopology: true });
+// mongoose.connect('mongodb://localhost:27017/threed', { useNewUrlParser: true, useUnifiedTopology: true });
 
-mongoose.connect(`${process.env.MONGO_LINK}`, {useNewUrlParser: true, useUnifiedTopology: true});
 
 server.get('/test',testHandler);
 //localhost:3001/models?title=
