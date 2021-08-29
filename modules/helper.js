@@ -7,25 +7,29 @@ const threeDSchema = new mongoose.Schema({
     modelCollection:String,
     email:String,
     thumbnail:String,
-    collection:String
+    collectionOfModels:String
   });
 
 
-  let arr = [];
+let arr = [];
 
 //localhost:3001/models?title=
   async function handleGetData(req,res){
+      
+           
+
 
   let nameOfModel= req.query.title
   let url = `https://api.sketchfab.com/v3/search?type=models&q=${nameOfModel}%20&animated=false`
-  
-  
+console.log('the name of the model is',nameOfModel);
 
-  
-    try{
+
+  try{
         let data = await axios.get(url)
-        console.log('the data console',data);
+        // console.log('the data console',data);
    data.data.results.map(item=>{
+    // console.log(item);
+
        let modelData=new modelClass (item.name, item.embedUrl,'cars', item.thumbnails.images[0].url,'tasneem.alabsi@gmail.com');
        arr.push(modelData);   }
        
@@ -44,123 +48,68 @@ catch(error) {
 // seedModelData()
 }
 
-// function handleUserData(req,res) {
-//     let userEmail = req.query.email;
-//     threeDModel.find({email:userEmail},function(error,threeDInfo){
-//         if(error) {
-//             console.log('error in getting the data')
-//         } else {
-//             res.send(threeDInfo)
-//         }
-//     })
-//   }
-
-
-
-
-
-
-
-
-    //   console.log('hhhhhhhhhhhhhhhhhhhh',arr);
-
-
-  function seedModelData() {
+  
+function seedModelData(collectionType) {
     // let collectionType = nameOfModel
-    const threeDModel = mongoose.model('cars', threeDSchema);
+    const threeDModel = mongoose.model(collectionType, threeDSchema);
     let saveModel = arr.map(item => {
         const models = new threeDModel({
             title : item.modelName ,
             modelCollection:item.modelUrl,
             email:'tasneem.alabsi@gmail.com',
-            collection:'cars',
+            collectionOfModels:collectionType,
             thumbnail:item.thumbnails.images[0].url
         })
         models.save();
     })
+    console.log('threeeeeeeeeeeeeee',threeDModel);
+
     
 }
 
-// function dealingWithData (request,response){
-
-    // if() 
-
 
 async function handleAddingData(req,res) {
+    console.log('mmmmmmmmmmmmmmmmmmmmm',req.body)
    let { title, modelUrl, email, collectionName } = req.body;
     
 
-
-    let collectionType = collectionName
+   let collectionType = collectionName
     const threeDModel = mongoose.model(`${collectionType}`, threeDSchema);
   
    
          
   
-    await threeDModel.create({title, modelUrl, email})
+    await threeDModel.create({title, modelUrl, email, collectionName})
   
-    //   threeDModel.find({email},function(error,threeDnfo){
-    //     if(error) {
-    //         console.log('error in getting the data')
-    //     } else {
-    //         res.send(threeDnfo)
-    //         console.log('hhhhhhhhhhh',threeDnfo);
-    //         console.log(typeof(threeDnfo._id));
-    //     }
-    // })
-    seedModelData()
-
-}
-
-async function handleAddingData(req,res) {
-    let { title, modelUrl, email, collectionName } = req.body;
-     
- 
- 
-     let collectionType = collectionName
-     const threeDModel = mongoose.model(`${collectionType}`, threeDSchema);
-   
     
-          
-   
-     await threeDModel.create({title, modelUrl, email,collectionName})
-   
-     //   threeDModel.find({email},function(error,threeDnfo){
-     //     if(error) {
-     //         console.log('error in getting the data')
-     //     } else {
-     //         res.send(threeDnfo)
-     //         console.log('hhhhhhhhhhh',threeDnfo);
-     //         console.log(typeof(threeDnfo._id));
-     //     }
-     // })
-     // seedModelData()
+    seedModelData(collectionType)
 
 }
+
+
 function handleGetCollection (req, res) {
     
-   
     let email = req.query.email;
     let collection = req.query.collection;
-    console.log(collection);
+    // console.log(collection);
     let collectionType = collection
      const threeDModel = mongoose.model(`${collectionType}`, threeDSchema);
      
-
-
-    threeDModel.find({email, collection},function(error,threeDnfo){
+      
+     threeDModel.find({email, collection},function(error,threeDInfo){
             if(error) {
                 console.log('error in getting the data')
             } else {
-                res.send(threeDnfo)
-                console.log('hhhhhhhhhhh',threeDnfo);
-                console.log(typeof(threeDnfo._id));
+                res.send(threeDInfo)
+                console.log('hhhhhhhhhhh',threeDInfo);
+                console.log(typeof(threeDInfo._id));
             }
         })
 
+    }
 
 
-}
+    
 
 
 

@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const PORT = process.env.PORT;
 const server = express();
 server.use(cors());
+server.use(express.json());
 const {handleGetData,handleAddingData,handleGetCollection} = require('./modules/helper.js');
 
 
