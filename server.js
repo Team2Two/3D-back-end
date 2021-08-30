@@ -7,7 +7,7 @@ const PORT = process.env.PORT;
 const server = express();
 server.use(cors());
 server.use(express.json());
-const {handleGetData,handleAddingData,handleGetCollection,handleDeletingData} = require('./modules/helper.js');
+const {handleGetData,handleAddingData,handleGetCollection} = require('./modules/helper.js');
 
 
 mongoose.connect("mongodb://localhost:27017/models", {useNewUrlParser: true, useUnifiedTopology: true});
@@ -17,8 +17,8 @@ server.get('/test',testHandler);
 server.get('/models',handleGetData);
 server.post('/addmodels',handleAddingData);
 server.get('/getcollection',handleGetCollection);
-// server.put('/updatemodels',handleUpdateData);
-server.delete('/deletemodels/:modelID2',handleDeletingData)
+// server.get('/addcollection',handleAddingCollection);
+// server.delete('/deletemodels/:modelID2',handleDeletingData)
 
 
 
