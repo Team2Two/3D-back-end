@@ -7,18 +7,18 @@ const PORT = process.env.PORT;
 const server = express();
 server.use(cors());
 server.use(express.json());
-const {handleGetData,handleAddingData,handleGetCollection,handleDeletingData} = require('./modules/helper.js');
+const {handleGetData,handleAddingData,handleGetCollection,handleAddingCollection} = require('./modules/helper.js');
 
 
-mongoose.connect(`${process.env.MONGO_LINK}`, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(`mongodb://maiadadb:0000@cluster0-shard-00-00.ii9w9.mongodb.net:27017,cluster0-shard-00-01.ii9w9.mongodb.net:27017,cluster0-shard-00-02.ii9w9.mongodb.net:27017/myFirst?ssl=true&replicaSet=atlas-114hrc-shard-0&authSource=admin&retryWrites=true&w=majority}`, {useNewUrlParser: true, useUnifiedTopology: true});
 
 server.get('/test',testHandler);
 //localhost:3001/models?title=
 server.get('/models',handleGetData);
 server.post('/addmodels',handleAddingData);
 server.get('/getcollection',handleGetCollection);
-// server.put('/updatemodels',handleUpdateData);
-server.delete('/deletemodels/:modelID2',handleDeletingData)
+server.post('/addcollection',handleAddingCollection);
+// server.delete('/deletemodels/:modelID2',handleDeletingData)
 
 
 
