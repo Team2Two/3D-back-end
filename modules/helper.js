@@ -1,6 +1,6 @@
 const axios = require('axios');
 const mongoose = require('mongoose');
-module.exports = { handleGetData, handleAddingData, handleGetCollection,handleAddingCollection };
+module.exports = { handleGetData, handleAddingData, handleGetCollection};
 
 const threeDSchema = new mongoose.Schema({
     title: String,
@@ -66,22 +66,22 @@ function seedModelData(collectionType) {
 
 
 }
-async function handleAddingCollection(req, res) {
-    console.log("mmmmmmmmmmmmmmmmmmmmm", req.body);
-    let {   email, collectionName } = req.body;
-    let collectionType = collectionName;
-    const threeDModel = mongoose.model(`${collectionType}`, threeDSchema);
-    await threeDModel.create({  email, collectionType });
-    threeDModel.find({ email: email }, function (err, collection) {
-        if (err) {
-          console.log("error in getting the data");
-        } else {
-          console.log(collection);
-          res.status(201).send(collection);
-        }
-      });
-    // seedModelData(collectionType);
-  }
+// async function handleAddingCollection(req, res) {
+//     console.log("mmmmmmmmmmmmmmmmmmmmm", req.body);
+//     let {   email, collectionName } = req.body;
+//     let collectionType = collectionName;
+//     const threeDModel = mongoose.model(`${collectionType}`, threeDSchema);
+//     await threeDModel.create({  email, collectionType });
+//     threeDModel.find({ email: email }, function (err, collection) {
+//         if (err) {
+//           console.log("error in getting the data");
+//         } else {
+//           console.log(collection);
+//           res.status(201).send(collection);
+//         }
+//       });
+//     // seedModelData(collectionType);
+//   }
 
 async function handleAddingData(req, res) {
     console.log('mmmmmmmmmmmmmmmmmmmmm', req.body)
