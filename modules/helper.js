@@ -74,15 +74,15 @@ async function handleAddingData(req,res) {
 
    let collectionType = collectionName
     const threeDModel = mongoose.model(`${collectionType}`, threeDSchema);
+    console.log('the type of collection',collectionType);
+    console.log(typeof(collectionType));
   
    
          
-  
-    await threeDModel.create({title, modelUrl, email, collectionName})
+  await threeDModel.create({title, modelUrl, email, collectionName})
   
     
     seedModelData(collectionType)
-
 }
 
 

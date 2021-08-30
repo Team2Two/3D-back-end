@@ -10,7 +10,7 @@ server.use(express.json());
 const {handleGetData,handleAddingData,handleGetCollection,handleDeletingData} = require('./modules/helper.js');
 
 
-mongoose.connect(`${process.env.MONGO_LINK}`, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect("mongodb://localhost:27017/models", {useNewUrlParser: true, useUnifiedTopology: true});
 
 server.get('/test',testHandler);
 //localhost:3001/models?title=
