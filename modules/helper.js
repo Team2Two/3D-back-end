@@ -1,8 +1,8 @@
 const axios = require('axios');
 const mongoose = require('mongoose');
-module.exports = { handleGetData, handleAddingData, handleGetCollection, handleGetUserCollection ,handleDeletingData};
+module.exports = { handleGetData, handleAddingData, handleGetCollection, handleGetUserCollection, handleDeletingData };
 
-let arrayofcollection=[];
+let arrayofcollection = [];
 const threeDSchema = new mongoose.Schema({
     title: String,
     modelCollection: String,
@@ -11,7 +11,7 @@ const threeDSchema = new mongoose.Schema({
     collectionOfModels: String
 });
 
-    const threeDModel = mongoose.model('alldata', threeDSchema);
+const threeDModel = mongoose.model('alldata', threeDSchema);
 
 let arr = [];
 
@@ -86,19 +86,19 @@ function seedModelData(collectionType) {
 //   }
 
 async function handleAddingData(req, res) {
-    
+
     console.log('mmmmmmmmmmmmmmmmmmmmm', req.body)
     let { title, modelUrl, email, collectionName, thumbnail } = req.body;
-   console.log(req.body);
+    console.log(req.body);
 
     // let collectionType = collectionName
     // const threeDModel = mongoose.model(`${collectionType}`, threeDSchema);
 
     arrayofcollection.push(threeDModel)
 
-console.log('after model',modelUrl,collectionName)
+    console.log('after model', modelUrl, collectionName)
 
-    await threeDModel.create({ title:title, modelCollection:modelUrl, email:email, collectionOfModels:collectionName, thumbnail:thumbnail })
+    await threeDModel.create({ title: title, modelCollection: modelUrl, email: email, collectionOfModels: collectionName, thumbnail: thumbnail })
 
 
     threeDModel.find({ email }, function (err, ownerData) {
@@ -108,7 +108,7 @@ console.log('after model',modelUrl,collectionName)
             console.log(ownerData);
             res.send(ownerData)
         }
-        
+
     })
     // seedModelData(collectionType)
 }
@@ -117,8 +117,8 @@ console.log('after model',modelUrl,collectionName)
 //     console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh')
 //     //   let m=  myFirstData.getCollection()
 //     //   console.log(  collections   )
-    
-    
+
+
 // let arrayforresp=[]
 //             let email = req.query.email;
 //             // let collection = req.query.collection;
@@ -128,7 +128,7 @@ console.log('after model',modelUrl,collectionName)
 //                 let collectionType = arrayofcollection[i]
 //             const threeDModel = mongoose.model(`${collectionType}`, threeDSchema);
 // // console.log(arrayofcollection)
-          
+
 //             threeDModel.find({ email }, function (error, threeDInfo) {
 //                 if (error) {
 //                     console.log('error in getting the data')
@@ -146,93 +146,94 @@ console.log('after model',modelUrl,collectionName)
 
 
 
-        function handleGetUserCollection(req, res) {
+function handleGetUserCollection(req, res) {
 
-            let email = req.query.email;
-            let collection = req.query.collection;
-            console.log(collection);
-            // console.log(collection);
-            // let collectionType = collection
-            // const threeDModel = mongoose.model(`${collectionType}`, threeDSchema);
+    let email = req.query.email;
+    let collection = req.query.collection;
+    console.log(collection);
+    // console.log(collection);
+    // let collectionType = collection
+    // const threeDModel = mongoose.model(`${collectionType}`, threeDSchema);
 
 
-            threeDModel.find({ email:email,collectionOfModels :collection }, function (error, threeDInfo) {
-                if (error) {
-                    console.log('error in getting the data')
-                } else {
-                    res.send(threeDInfo)
-                    console.log('hhhhhhhhhhh', threeDInfo);
-                    console.log(typeof (threeDInfo._id));
-                }
-            })
-
+    threeDModel.find({ email: email, collectionOfModels: collection }, function (error, threeDInfo) {
+        if (error) {
+            console.log('error in getting the data')
+        } else {
+            res.send(threeDInfo)
+            console.log('hhhhhhhhhhh', threeDInfo);
+            console.log(typeof (threeDInfo._id));
         }
+    })
+
+}
 
 
 
 
-           function handleGetCollection(req, res) {
+function handleGetCollection(req, res) {
 
-            let email = req.query.email;
-            // let collection = req.query.collection;
-            // console.log(collection);
-            // let collectionType = collection
-            // const threeDModel = mongoose.model(`${collectionType}`, threeDSchema);
+    let email = req.query.email;
+    // let collection = req.query.collection;
+    // console.log(collection);
+    // let collectionType = collection
+    // const threeDModel = mongoose.model(`${collectionType}`, threeDSchema);
 
 
-            threeDModel.find({ email }, function (error, threeDInfo) {
-                if (error) {
-                    console.log('error in getting the data')
-                } else {
-                    res.send(threeDInfo)
-                    console.log('hhhhhhhhhhh', threeDInfo);
-                    console.log(typeof (threeDInfo._id));
-                }
-            })
-
+    threeDModel.find({ email }, function (error, threeDInfo) {
+        if (error) {
+            console.log('error in getting the data')
+        } else {
+            res.send(threeDInfo)
+            console.log('hhhhhhhhhhh', threeDInfo);
+            console.log(typeof (threeDInfo._id));
         }
+    })
+
+}
 
 
 function handleDeletingData(req, res) {
 
-            let email = req.query.email;
-            let modelID = req.params.modelID2;
-            let collection = req.query.collection;
+    let email = req.query.email;
+    let modelID = req.params.modelID2;
+    let collection = req.query.collection;
 
-            // const threeDModel = mongoose.model(collectionType, threeDSchema);
-            // console.log(req.params);
-            // console.log(modelID);
+    // const threeDModel = mongoose.model(collectionType, threeDSchema);
+    // console.log(req.params);
+    // console.log(modelID);
 
+    try {
 
-            threeDModel.remove({ _id: modelID }, (error, modelData1) => {
-                if (error) {
-                    console.log('error in deleteing the data', error)
-                    // console.log();
-                } else {
-                    console.log('data deleted', modelData1)
-                    threeDModel.find({ email:email, collectionOfModels:collection  }, function (error, modelData) {
-                        if (error) {
-                            console.log('error in getting the data')
-                        } else {
-                            res.send(modelData)
-                        }
-                    })
-                }
-            })
+        threeDModel.deleteOne({ "_id": modelID })
+        console.log(`done delete ${modelID}`)
+    } catch (e) {
+        res.send(e)
+    }
+    threeDModel.find({ email: email, collectionOfModels: collection }, function (error, modelData) {
+        if (error) {
+            res.send('error in getting the data')
+        } else {
+            res.send(modelData)
+            console.log(modelData)
         }
+    })
+
+
+}
 
 
 
 
 
 class modelClass {
-            constructor(modelName, modelUrl, modelCollection, thumbnail, email, key) {
-                this.modelName = modelName;
-                this.modelUrl = modelUrl;
-                this.thumbnail = thumbnail;
-                this.modelCollection = modelCollection;
-                this.email = email;
-                this.key = key
+    constructor(modelName, modelUrl, modelCollection, thumbnail, email, key) {
+        this.modelName = modelName;
+        this.modelUrl = modelUrl;
+        this.thumbnail = thumbnail;
+        this.modelCollection = modelCollection;
+        this.email = email;
+        this.key = key
 
-            }
-        }
+    }
+}
