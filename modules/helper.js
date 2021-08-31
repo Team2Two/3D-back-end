@@ -1,6 +1,6 @@
 const axios = require('axios');
 const mongoose = require('mongoose');
-module.exports = { handleGetData, handleAddingData, handleGetCollection, handleGetUserCollection, handleDeletingData };
+module.exports = { handleGetData, handleAddingData, handleGetCollection, handleGetUserCollection, handleDeletingData, handleDeletingCollections };
 
 let arrayofcollection = [];
 const threeDSchema = new mongoose.Schema({
@@ -203,8 +203,31 @@ function handleDeletingData(req, res) {
             console.log('error in deleteing the data', error)
             // console.log();
         } else {
-            console.log('data deleted', modelData1)
+            // console.log('data deleted', modelData1)
             threeDModel.find({ email:email,collectionOfModels:collection }, function (error, modelData) {
+                if (error) {
+                    console.log('error in getting the data')
+                } else {
+                    console.log(modelData)
+                    res.send(modelData)
+                    
+                }
+            })
+        }
+    })
+}
+
+function handleDeletingCollections(req, res) {
+    let email = req.query.email;
+    let collection = req.params.collection;
+   
+    threeDModel.remove({ collectionOfModels: collection }, (error, modelData1) => {
+        if (error) {
+            console.log('error in deleteing the data', error)
+            // console.log();
+        } else {
+            console.log('data deleted', modelData1)
+            threeDModel.find({ email:email }, function (error, modelData) {
                 if (error) {
                     console.log('error in getting the data')
                 } else {
