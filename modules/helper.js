@@ -197,7 +197,7 @@ function handleDeletingData(req, res) {
 
             let email = req.query.email;
             let modelID = req.params.modelID2;
-            // let collection = req.query.collection;
+            let collection = req.query.collection;
 
             // const threeDModel = mongoose.model(collectionType, threeDSchema);
             // console.log(req.params);
@@ -210,7 +210,7 @@ function handleDeletingData(req, res) {
                     // console.log();
                 } else {
                     console.log('data deleted', modelData1)
-                    modelsModel.find({ email }, function (error, modelData) {
+                    threeDModel.find({ email:email, collectionOfModels:collection  }, function (error, modelData) {
                         if (error) {
                             console.log('error in getting the data')
                         } else {
