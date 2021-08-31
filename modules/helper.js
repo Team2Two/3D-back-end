@@ -185,8 +185,8 @@ function handleGetCollection(req, res) {
             console.log('error in getting the data')
         } else {
             res.send(threeDInfo)
-            console.log('hhhhhhhhhhh', threeDInfo);
-            console.log(typeof (threeDInfo._id));
+            // console.log('hhhhhhhhhhh', threeDInfo);
+            // console.log(typeof (threeDInfo._id));
         }
     })
 
